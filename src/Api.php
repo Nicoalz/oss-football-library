@@ -52,12 +52,9 @@ class Api
         );
         $content = $response->getContent();
         $crawler = new Crawler($content);
-        // select div id tabAwards
         $crawler = $crawler->filter('div#tabAwards');
-        // get only first class div card
         $crawler = $crawler->filter('div.card')->first();
         $winners = [];
-        // in each statHorizontalBar, get statHorizontalBar__label and statHorizontalBar__value
         $crawler = $crawler->filter('div.statHorizontalBar')->each(function (Crawler $node, $i) use (&$winners) {
             $winners[] = new Winner(
                 $node->filter('div.statHorizontalBar__label')->text(),
