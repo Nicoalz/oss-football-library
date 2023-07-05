@@ -16,6 +16,9 @@ class Api
         $this->client = $client;
     }
 
+    /**
+     * @return Competition[]
+     */
     public function getPopularCompetitions(): array
     {
         $response = $this->client->request(
@@ -27,6 +30,7 @@ class Api
         $crawler = $crawler->filter('div.content');
         $crawler = $crawler->filter('div.cards')->first();
         $crawler = $crawler->filter('ul.card__list');
+        $competitions = [];
         $crawler->filter('li')->each(function (Crawler $node, $i) use (&$competitions) {
             $competitions[] = new Competition(
                 $node->filter('span.identity__title')->text(),
@@ -45,11 +49,11 @@ class Competition
     private string $region;
     private string $type;
 
-    public function __construct(string $name, string $region, string $type)
+    public function __construct(string $name, string $region, ?string $type)
     {
         $this->name = $name;
         $this->region = $region;
-        $this->type = $type;
+        $this->type = $type ?? 'unknown';
     }
 
     public function getName(): string
