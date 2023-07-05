@@ -13,7 +13,13 @@ composer install
 ```
 
 ```bash
-php vendor/bin/phpstan analyse src --level=max
+composer phpstan
+```
+
+## Testing
+
+```bash
+composer test
 ```
 
 ## Features
