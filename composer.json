@@ -1,0 +1,30 @@
+{
+    "name": "nicolasbordeaux/oss-football-library",
+    "description": "Football library",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Nicolasbordeaux\\OssFootballLibrary\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nico",
+            "email": "nicolas.bordeaux@edu.devinci.fr"
+        }
+    ],
+    "require-dev": {
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^9.6"
+    },
+    "scripts": {
+        "phpstan": "@php vendor/bin/phpstan analyse src --level=max",
+        "test": "@php vendor/bin/phpunit tests"
+    },
+    "require": {
+        "symfony/http-client": "^6.0",
+        "symfony/dom-crawler": "^6.0",
+        "symfony/css-selector": "^6.0"
+    }
+}
