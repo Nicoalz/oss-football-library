@@ -15,6 +15,20 @@ class ApiTest extends TestCase
             $this->assertIsString($competition->getName());
             $this->assertIsString($competition->getRegion());
             $this->assertIsString($competition->getType());
+            $this->assertIsString($competition->getId());
+        }
+    }
+
+    public function testGetBestWinners()
+    {
+        $client = Symfony\Component\HttpClient\HttpClient::create();
+        $api = new Api($client);
+        $mockedCompetitionId = 'international/coupe-du-monde';
+        $winners = $api->getBestWinners($mockedCompetitionId);
+        $this->assertIsArray($winners);
+        foreach ($winners as $winner) {
+            $this->assertIsString($winner->getName());
+            $this->assertIsInt($winner->getWinsNmb());
         }
     }
 }

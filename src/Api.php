@@ -41,33 +41,31 @@ class Api
         return $competitions;
     }
 
-}
-
-class Competition
-{
-    private string $name;
-    private string $region;
-    private string $type;
-
-    public function __construct(string $name, string $region, ?string $type)
+    /**
+     * @return Winner[]
+     */
+    public function getBestWinners(string $competitionID): array
     {
-        $this->name = $name;
-        $this->region = $region;
-        $this->type = $type ?? 'unknown';
+        $response = $this->client->request(
+            'GET',
+            'https://www.foot-direct.com/' . $competitionID . '/#tabAwards'
+        );
+        $content = $response->getContent();
+        $crawler = new Crawler($content);
+        // select div id tabAwards
+        $crawler = $crawler->filter('div#tabAwards');
+        // get only first class div card
+        $crawler = $crawler->filter('div.card')->first();
+        $winners = [];
+        // in each statHorizontalBar, get statHorizontalBar__label and statHorizontalBar__value
+        $crawler = $crawler->filter('div.statHorizontalBar')->each(function (Crawler $node, $i) use (&$winners) {
+            $winners[] = new Winner(
+                $node->filter('div.statHorizontalBar__label')->text(),
+                (int) $node->filter('div.statHorizontalBar__value')->text()
+            );
+        });
+
+        return $winners;
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getRegion(): string
-    {
-        return $this->region;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
 }
